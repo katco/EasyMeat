@@ -1,0 +1,188 @@
+body { 
+	padding-top: 5px;	
+}
+  .title {padding:10px;}
+    .main {padding-left:10px; margin:auto;}
+    .toolbar {}
+    .toolbar li {width:25px; height:25px; margin:auto;list-style-type: none; border:1px solid #ccc; border-radius:6px; margin:5px; display:block; float:left;}
+    #black {background-color:black;}
+    #red {background-color:red;}
+    #green {background-color:green;}
+    #blue {background-color:blue;}
+    #small {text-align:center; line-height:20px; font-size:40%;}
+    #middle {text-align:center; line-height:20px; font-size:60%;}
+    #large {text-align:center; line-height:20px; font-size:80%;}
+  /* お絵描きする部分のCSS */
+.canvas {width:280px; height:280px; border:1px solid #ccc;}
+.canvas canvas {width:280px; height:280px;}
+
+/* 削除ボタンのCSS */
+#delete_button {width:320px; height:44px; margin-top:10px;}
+
+.xmart-logo {
+	height: 18px;
+	margin-top: -4px;
+}
+
+.navbar-xmartlabs.navbar-inner {
+	background: url("../img/background.png");
+	border-bottom:6px solid #08C !important;
+}
+
+.chat-container {
+    margin-top:-20px;
+}
+
+.chat-container div {
+	border-color: #E0E0E0;
+	border-style: solid;
+	border-width: 0px 1px 1px;
+}
+
+.chat-messages-container {
+	height: 360px;
+	padding-left: 19px;
+	overflow-y: scroll;
+	overflow-x: hidden;
+  background-color: #B0E0E6;
+}
+
+.chat-messages-list
+{
+	list-style-type:none;
+	padding:0px;
+	margin:0px;
+}
+
+.chat-message {
+	position:relative;
+width:200px;
+padding:0 5px;
+border:1px solid #ccc;
+  background-color: #ffffff;
+border-radius:15px;
+font-size:12px;
+line-height:1.6em;
+margin:20px;
+z-index:0;
+}
+/* 吹き出し三角形部分 */
+.chat-message:after{
+content:" ";
+position: absolute;
+top: 100%;
+left: 15px; 
+z-index:1;
+width: 0;
+height: 0;
+border: 8px solid transparent;
+border-top-color: #ccc;
+}
+
+/* 三角形の上に乗せる。一回り小さくする。 */
+.chat-message span.overlay{
+position:absolute;
+top: 100%;
+left: 11px; 
+z-index:2;
+width: 0;
+height: 0;
+border: 7px solid transparent;
+border-top-color: #fff;
+}
+.chat-message-me {
+	position:relative;
+width:200px;
+padding:0 5px;
+border:1px solid #ccc;
+  background-color: #98FB98;
+border-radius:15px;
+font-size:12px;
+line-height:1.6em;
+margin:10px 10px 10px 50px;
+z-index:0;
+}
+/* 吹き出し三角形部分 */
+.chat-message-me:after{
+content:" ";
+position: absolute;
+top: 100%;
+left: 175px; 
+z-index:1;
+width: 0;
+height: 0;
+border: 8px solid transparent;
+border-top-color: #ccc;
+}
+
+/* 三角形の上に乗せる。一回り小さくする。 */
+.chat-message-me span.overlay-me{
+position:absolute;
+top: 100%;
+left: 171px; 
+z-index:2;
+width: 0;
+height: 0;
+border: 7px solid transparent;
+border-top-color: #98FB98;
+}
+
+.chat-message p{
+	margin: 10px;
+	clear: both;
+}
+.chat-message-me p{
+
+	margin: 10px;
+	clear: both;
+
+}
+
+.sender{
+	float: left;
+}
+
+.message-date {
+	float:right;
+	padding: 0px 5px 0px;
+	color: #A2A2A2;
+}
+
+.chat-messagebox-container{
+	background-color: #F2F2F255;
+	padding: 0px 19px 35px; 
+}
+
+.chat-messagebox-container textarea{
+	margin-top: 15px;
+	max-height: 300px;
+	overflow:hidden;
+
+	-webkit-box-sizing: border-box;
+  	-moz-box-sizing: border-box;
+  	box-sizing: border-box;
+
+  	width: 100%
+}
+
+.chat-header {
+	height: 24px;
+	font-size: 16px;
+	font-weight: bold;
+	padding: 18px 19px 18px 22px;
+}
+
+.sender {
+	font-weight: bold;
+}
+
+#map_canvas {
+	margin-bottom: 20px;
+}
+
+.follow {
+    position: fixed;
+
+    bottom: 0;
+    right: 0;
+}

@@ -1,0 +1,343 @@
+﻿<!DOCTYPE HTML>
+<html lang="en-US">
+<head>
+	<meta charset="UTF-8">	
+	<meta name="viewport" content="width=320px initial-scale=1" />
+	<meta name="apple-mobile-web-app-capable" content="yes" />
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+	<title>EasyMeet</title>
+	<link rel="icon" href="img/favicon.ico" type="image/x-icon">
+	<link rel="shortcut icon" href="img/favicon.ico" type="image/x-icon">
+	<link rel="stylesheet" type="text/css" href="/css/xmartpushapp.css" media="all" />
+	<link rel="stylesheet" type="text/css" href="/css/bootstrap.min.css" media="all" />
+	<link rel="stylesheet" type="text/css" href="/css/bootstrap-responsive.min.css" media="all" />
+</head>
+<body>	
+<!--
+	<div class="container">
+		<div class="row-fluid">	
+		-->
+
+ 
+ 
+<form action="" method="get" onsubmit="return false;"><input id="enter" style="width: 200px;" type="text" name="enter" value="" /> <input id="enter" onclick="roomPut();" type="submit" name="enter" value="ルームへ" /></form>
+
+			<div id="channelForm" class="form-inline">
+				<label for="nameBox">名前を入れてください </label>
+				<input type="text" id="nameBox"/>
+				<button id="createChannel" class="btn" type="submit">デモ版の部屋に入る</button>
+			</div>
+		</div>
+		<div id="content">
+		
+		<div class="row-fluid">	
+		 <div id="port-box"></div>
+ 
+<div id="list-box"></div>		
+<div class="tabbable">
+<ul class="nav nav-tabs">
+    <li class="active"><a href="#1" data-toggle="tab">マップ</a></li>
+    <li><a href="#2" data-toggle="tab">ログ</a></li>
+	 <li><a href="#3" data-toggle="tab">ナビ</a></li>
+	 <li><a href="#4" data-toggle="tab">目印</a></li>
+    </ul>
+    <div class="tab-content">
+    <div class="tab-pane active" id="1">
+	<button id="reload" class="btn" type="submit">再読み込み</button>
+    <div id="map_canvas" class="span8" style="min-height: 500px;"></div>
+    </div>
+    <div class="tab-pane" id="2">
+    <div id="chatContainer" class="chat-container span4" style="min-height: 500px;"></div>
+    </div>
+	<div class="tab-pane" id="3">
+	<div id="direction-panel"></div>
+    </div>
+	<div class="tab-pane" id="4">
+	 <!-- Main -->
+  <div class="main">
+    <div class="toolbar">
+      <ul>
+        <li id="black"> </li>
+        <li id="blue"></li>
+        <li id="red"></li>
+        <li id="green"></li>
+        <li id="small">S</li>
+        <li id="middle">M</li>
+        <li id="large">L</li>
+      </ul>
+    </div>
+    <div style="clear:left;"></div>
+		
+    <div class="canvas"><canvas id="myCanvas"></canvas></div>
+
+	<input id="delete_button" class="btn" type="submit"/>
+  </div>
+    </div>
+    </div>
+    </div>		
+		
+			
+		</div>
+</div>		
+<div id="messageBoxContainer" class="follow" >
+		<img src="img/data/img01.png" width="20" onclick="return sampleFunc(this);">
+<img src="img/data/img02.png" width="20" onclick="return sampleFunc(this);">
+<img src="img/data/img03.png" width="20" onclick="return sampleFunc(this);">
+<img src="img/data/img04.png" width="20" onclick="return sampleFunc(this);"><br>
+<img src="img/data/img05.png" width="20" onclick="return sampleFunc(this);">
+<img src="img/data/img06.png" width="20" onclick="return sampleFunc(this);">
+<img src="img/data/img07.png" width="20" onclick="return sampleFunc(this);">
+<img src="img/data/img08.png" width="20" onclick="return sampleFunc(this);"><br>
+<img src="img/data/img09.png" width="20" onclick="return sampleFunc(this);">
+<img src="img/data/img10.png" width="20" onclick="return sampleFunc(this);">
+<img src="img/data/img11.png" width="20" onclick="return sampleFunc(this);">
+<img src="img/data/img12.png" width="20" onclick="return sampleFunc(this);"><br>
+<img src="img/data/img13.png" width="20" onclick="return sampleFunc(this);">
+<img src="img/data/img14.png" width="20" onclick="return sampleFunc(this);">
+<img src="img/data/img15.png" width="20" onclick="return sampleFunc(this);">
+<img src="img/data/img16.png" width="20" onclick="return sampleFunc(this);">
+	</div>
+</body>
+<script src="/socket.io/socket.io.js"></script>
+<script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js"></script>
+
+<script type="text/javascript"
+      src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDVPtUwnFXt0-wEylg3qIQUaBoS2RAv5CE&sensor=true">
+</script>
+<script type="text/javascript" src="/js/bootstrap.min.js"></script>
+<script type="text/javascript" src="/js/xmartutil.js"></script>
+<script type="text/javascript" src="/js/xmartlocator.js"></script>
+<script type="text/javascript" src="/js/xmartchat.js"></script>
+<script type="text/javascript" src="/js/autogrow.js"></script>
+<script type="text/javascript" src="/js/infobox.js"></script>
+<script type="text/javascript" src="/js/bootstrap-tab.js"></script>
+
+<script>
+var socket = io.connect(window.location.hostname);
+xmartlabslocator.initialize(socket,'map_canvas');
+$(function clickNaCo(){
+    $(".NaCo").live("click", function(){
+        $(this).css("background-color", "#D6D6D6");
+    });
+});
+//サーバーに入るルーム名を送信
+function roomPut(){
+    var num = $("#enter").val();
+    socket.emit("enter", {value: num});
+}
+
+function sampleFunc(obj) {
+
+
+//socket.emit("message", "<img src=\"" + obj.src + "\" width=\"50\" align=\"center\">");
+xmartlabschat.sendMessage("<img src=\"" + obj.src + "\" width=\"50\" align=\"center\">");
+return false;
+}
+ window.addEventListener("load", function () {
+	
+$('#content').hide();
+
+socket.on("roomList", function(roomList){
+    $("#list-box").text("");
+   if(roomList){
+        for(var j in roomList){
+            console.log(j + "、" + roomList[j] + "人います");
+            var roomLcount = roomList[j];
+            var roomName = j;
+            $("#list-box").append("<span class=\"NaCo\">" + roomName + "（" + roomLcount + " / 4）</span>");
+        }
+    }
+      
+});
+socket.on("port", function(count){
+    $("#port-box").text(count.value + "人がオンライン");
+});
+ 
+socket.on("roomDel", function(roomList){
+
+    $("#list-box").text("");
+    if(roomList){
+        for(var k in roomList){
+            $("#list-box").append("<span class=\"NaCo\">" + k + "（" + roomList[k] + " / 4）</span>");
+        }
+    }
+});
+	function loadWorldChat(username){		
+		$('#channelForm').hide();
+		$('#content').show();
+		$("#userGreeting").html("こんにちは "+username+"さん!");
+		
+		xmartlabschat.initialize(username, socket, "chatContainer");    
+		//xmartlabslocator.initialize(socket,'map_canvas');
+	}
+
+	function getUrlParameter(param){
+  	if(param=(new RegExp('[?&]'+encodeURIComponent(param)+'=([^&]*)')).exec(location.search)) {
+      return decodeURIComponent(param[1]);
+    }
+	}
+$('#reload').on('click',function(){
+
+			xmartlabslocator.roloadMap();
+			
+		});
+	var username = getUrlParameter("username");
+	if(username) {
+		loadWorldChat(username);
+	} else {		
+		$('#createChannel').on('click',function(){
+			username = $("#nameBox").val();
+			loadWorldChat(username);
+		});
+	}   
+	
+      // Canvas描画に必要な変数を定義する
+      var canvas = document.getElementById("myCanvas");
+      var c = canvas.getContext("2d");
+      var w = 320;
+      var h = 320;
+      var drawing = false;
+      var oldPos;
+
+      // Canvasを初期化する
+      canvas.width = w;
+      canvas.height = h;
+      c.strokeStyle = "#000000";
+      c.lineWidth = 5;
+      c.lineJoin = "round";
+      c.lineCap = "round";
+	        var img = new Image();
+  img.src = "http://maps.google.com/maps/api/staticmap?center=38.754083,139.570313&zoom=4&size=320x320&sensor=false";
+  /* 画像を描画 */
+  img.onload = function() {
+    c.drawImage(img, 0, 0);
+  }
+  
+
+      // Canvas上の座標を計算する為の関数たち
+      function scrollX(){
+        return document.documentElement.scrollLeft || document.body.scrollLeft;
+      }
+      function scrollY(){
+        return document.documentElement.scrollTop || document.body.scrollTop;
+      }
+      function getPos (event) {
+        var mouseX = event.clientX - $(canvas).position().left + scrollX();
+        var mouseY = event.clientY - $(canvas).position().top + scrollY();
+        return {x:mouseX, y:mouseY};
+      }
+      function getPosT (event) {
+        var mouseX = event.touches[0].clientX - $(canvas).position().left + scrollX();
+        var mouseY = event.touches[0].clientY - $(canvas).position().top + scrollY();
+        return {x:mouseX, y:mouseY};
+      }
+                                   
+      // ここからは、Canvasに描画する為の処理                             
+      canvas.addEventListener("touchstart", function (event) {
+        console.log("touchstart");
+        drawing = true;
+        oldPos = getPosT(event);
+      }, false);
+      canvas.addEventListener("touchend", function () {
+        console.log("touchend");
+        drawing = false;
+      }, false);
+	  
+	  // gestureイベント（２本指以上で触ると発生するやつ）の
+  // 終了時にも絵を描く後処理を行う
+  canvas.addEventListener("gestureend", function () {
+    console.log("mouseout");
+    drawing = false;
+  }, false);
+      canvas.addEventListener("touchmove", function (event) {
+        var pos = getPosT(event);
+        console.log("mousemove : x=" + pos.x + ", y=" + pos.y + ", drawing=" + drawing);
+        if (drawing) {
+          c.beginPath();
+          c.moveTo(oldPos.x, oldPos.y);
+          c.lineTo(pos.x, pos.y);
+          c.stroke();
+          c.closePath();
+    
+          // socket.IOサーバーに、
+          // どの点からどの点までを描画するかをの情報を送付する
+          socket.emit("draw", {before:oldPos, after:pos});
+          oldPos = pos;
+        }
+      }, false);
+      
+     // タップ位置を取得する為の関数群
+  function scrollX(){return document.documentElement.scrollLeft || document.body.scrollLeft;}
+  function scrollY(){return document.documentElement.scrollTop || document.body.scrollTop;}
+  function getPosT (event) {
+    var mouseX = event.touches[0].clientX - $(canvas).position().left + scrollX();
+    var mouseY = event.touches[0].clientY - $(canvas).position().top + scrollY();
+    return {x:mouseX, y:mouseY};
+  }
+      // 色や太さを選択した場合の処理
+      // 選択した結果を、Canvasに設定して、
+      // socket.IOサーバーにも送付している
+      $("#black").click(function () {c.strokeStyle = "black";socket.emit("color", "black");});
+      $("#blue").click(function () {c.strokeStyle = "blue";socket.emit("color", "blue");});
+      $("#red").click(function () {c.strokeStyle = "red";socket.emit("color", "red");});
+      $("#green").click(function () {c.strokeStyle = "green";socket.emit("color", "green");});
+      $("#small").click(function () {c.lineWidth = 5;socket.emit("lineWidth", 5);});
+      $("#middle").click(function () {c.lineWidth = 10;socket.emit("lineWidth", 10);});
+      $("#large").click(function () {c.lineWidth = 20;socket.emit("lineWidth", 20);});
+      // 削除ボタンの動作                                 
+  $("delete_button").click(function () {
+    c.clearRect(0, 0, $(canvas).width(), $(canvas).height());socket.emit("clear");
+  });
+      // socket.IOサーバーから描画情報を受け取った場合の処理
+      // 受け取った情報を元に、Canvasに描画を行う
+      socket.on("draw", function (data) {
+        console.log("on draw : " + data);
+        c.beginPath();
+        c.moveTo(data.before.x, data.before.y);
+        c.lineTo(data.after.x, data.after.y);
+        c.stroke();
+        c.closePath();
+      });
+     
+      // socket.IOサーバーから色情報を受け取った場合の処理
+      // Canvasに色を設定している
+      socket.on("color", function (data) {
+	  
+        console.log("on color : " + data);
+        c.strokeStyle = data;
+      });
+
+           
+      // socket.IOサーバーから線の太さ情報を受け取った場合の処理
+      // Canvasに線の太さを設定している
+      socket.on("lineWidth", function (data) {
+        console.log("on lineWidth : " + data);
+        c.lineWidth = data;
+      });
+	  
+	  socket.on("clear", function (data) {
+        console.log("clear");
+        c.clearRect(0, 0, $(canvas).width(), $(canvas).height());
+      });
+	 
+	  function stopDefault(event) {
+  if (event.touches[0].target.tagName.toLowerCase() == "li") {return;}
+  if (event.touches[0].target.tagName.toLowerCase() == "input") {return;}
+  if (event.touches[0].target.tagName.toLowerCase() == "button") {return;}
+  if (event.touches[0].target.tagName.toLowerCase() == "a") {return;}
+  if (event.touches[0].target.tagName.toLowerCase() == "textarea") {return;}
+ //event.preventDefault();
+ 
+}
+
+// タッチイベントの初期化
+document.addEventListener("touchstart", stopDefault, false);
+document.addEventListener("touchmove", stopDefault, false);
+document.addEventListener("touchend", stopDefault, false); 
+// ジェスチャーイベントの初期化
+document.addEventListener("gesturestart", stopDefault, false);
+document.addEventListener("gesturechange", stopDefault, false);
+document.addEventListener("gestureend", stopDefault, false); 
+ }, false);       
+</script>
+</html>
