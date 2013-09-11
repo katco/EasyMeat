@@ -24,21 +24,27 @@
 	
 
 	function addUser(user){
+	
 		if(!users[user.key])
-			updateUsersCount(1);
+		
+			//updateUsersCount(1);
+			
 		users[user.key] = user;
+		
 	}
 	publicScope.addUser = addUser;
 
 	function removeUser(key){
 		if(users[key]) {
 			delete users[key];		
-			updateUsersCount(-1);
+			//updateUsersCount(-1);
 		}
 	}
 
 	function updateUsersCount(diff){
+	        
 			var currentCount = parseInt(usersCount.html()) + diff;
+			
 			usersCount.html(currentCount);
 	}
 
@@ -97,6 +103,8 @@
 	}
 
 	function createChatWindow(containerId){
+	
+	    
 		var chatContainer = $("#"+containerId);
 
 		$("<div>").addClass("chat-header").appendTo(chatContainer);

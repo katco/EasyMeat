@@ -37,7 +37,7 @@
 
 		webSocket.on('location update', updateMarker);
 		webSocket.on('user disconnected', removeMarker);
-		webSocket.emit('request locations', loadMarkers);
+		//webSocket.emit('request locations', loadMarkers);
 		
 		//追加
 		webSocket.on('new chat msg', receiveChatMessage);
@@ -53,28 +53,23 @@
 		$(document).on('click', ".sender", showUserLocation);
 	}
 	
-	
+	//クリックしたときのイベント
 	publicScope.roloadMap = function() {
 	
 		google.maps.event.trigger(map, 'resize');
 		
 	}
-	//クリックしたときのイベント
+	
+	
+	publicScope.loadMs = function() {
+	
+		webSocket.emit('request locations', loadMarkers);
+		
+	}
 	
 	  function mylistener(event) {
 	console.log("mylistener:"+event);
-	
-		  //ソケットで目的地変更のイベントを送信
-		  webSocket.emit('updateGoal', event);
-
-	  
-    }
-	function updateGoalPos(event) {
-	
-	var str;  //入力文字を入れる変数
-
-//インプットボックスの表示＆入力文字をstrに代入
-str = prompt("合言葉は？","");
+	str = prompt("合言葉は？","");
 
 //strが空の場合の処理
 if (str == ""){
@@ -86,6 +81,17 @@ return;
 }else{
 alert("いいね");
 }
+		  //ソケットで目的地変更のイベントを送信
+		  webSocket.emit('updateGoal', event);
+
+	  
+    }
+	function updateGoalPos(event) {
+	
+	var str;  //入力文字を入れる変数
+
+//インプットボックスの表示＆入力文字をstrに代入
+
 	////////////////////////////
 	timeToGoal  = +new Date() + 54981249;
 	timeDiff = timeToGoal - new Date();
@@ -123,7 +129,7 @@ alert("いいね");
 	   var img = new Image();
   img.src = "http://maps.google.com/maps/api/staticmap?center=" + event.latLng.pb + "," + event.latLng.qb + "&zoom=16&size=320x320&sensor=false";
   /* 画像を描画 */
-  alert(img.src);
+ // alert(img.src);
   img.onload = function() {
     c.drawImage(img, 0, 0);
 	
@@ -214,7 +220,6 @@ function computeDuration(ms){
 
 	function showPosition(position) {
 	
-      //alert("");
 		var data = {
 			lat : position.coords.latitude,
 			lng : position.coords.longitude,
@@ -227,7 +232,7 @@ function computeDuration(ms){
 	
 		
 		map.setCenter(myMarker.getPosition());
-       //alert(room);
+       
 		//webSocket.to(room).emit("send location",data);
 		webSocket.emit("send location",data);
 		//webSocket.broadcast.emit("send location",data);
@@ -250,7 +255,7 @@ function computeDuration(ms){
 
 	function updateMarker(data) {
 	
-	    alert("updateMarker");
+	 
 		var marker = markers[data.key];
 		//ルート表示の始点を変更
 		
@@ -266,14 +271,15 @@ function computeDuration(ms){
 	
 
 	function loadMarkers(data) {
-	    alert("loadMarkers");
-	     
+	    
+	    
 		for(key in data) {
-		
+	        
 			var user = data[key];
-			alert(user.name);
-			xmartlabschat.addUser(user);
-			alert(user.name);
+			if(user.room != room)
+			continue;
+			//xmartlabschat.addUser(user);
+		
 			markers[key] = getMarker(user.lat, user.lng, user.name);
 			direct_start = new google.maps.LatLng(user.lat, user.lng);
 			

@@ -2,15 +2,37 @@
 <html lang="en-US">
 <head>
 	<meta charset="UTF-8">	
-	<meta name="viewport" content="width=320px initial-scale=1" />
-	<meta name="apple-mobile-web-app-capable" content="yes" />
-<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+		<meta name="HandheldFriendly" content="True">
+    <meta name="MobileOptimized" content="320">
+    <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
+    <meta http-equiv="cleartype" content="on">
+    
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
 	<title>EasyMeet</title>
 	<link rel="icon" href="img/favicon.ico" type="image/x-icon">
 	<link rel="shortcut icon" href="img/favicon.ico" type="image/x-icon">
 	<link rel="stylesheet" type="text/css" href="/css/xmartpushapp.css" media="all" />
 	<link rel="stylesheet" type="text/css" href="/css/bootstrap.min.css" media="all" />
 	<link rel="stylesheet" type="text/css" href="/css/bootstrap-responsive.min.css" media="all" />
+
+	<link rel="stylesheet" type="text/css" href="/css/normalize.css">
+		<link rel="stylesheet" type="text/css" href="/css/styles.css">
+		<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js"></script>
+		<script src="/jquery.mobile-menu.js"></script>	
+			<script src="/socket.io/socket.io.js"></script>
+
+
+<script type="text/javascript"
+      src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDVPtUwnFXt0-wEylg3qIQUaBoS2RAv5CE&sensor=true">
+</script>
+<script type="text/javascript" src="/js/bootstrap.min.js"></script>
+<script type="text/javascript" src="/js/xmartutil.js"></script>
+<script type="text/javascript" src="/js/xmartlocator.js"></script>
+<script type="text/javascript" src="/js/xmartchat.js"></script>
+<script type="text/javascript" src="/js/autogrow.js"></script>
+<script type="text/javascript" src="/js/infobox.js"></script>
+<script type="text/javascript" src="/js/bootstrap-tab.js"></script>
 </head>
 <body>	
 <!--
@@ -18,13 +40,66 @@
 		<div class="row-fluid">	
 		-->
 
- 
- 
-<form action="" method="get" onsubmit="return false;"><input id="enter" style="width: 200px;" type="text" name="enter" value="" /> <input id="enter" onclick="roomPut();" type="submit" name="enter" value="ルームへ" /></form>
 
-			<div id="channelForm" class="form-inline">
+
+
+			<nav id="main-nav">
+				<ul style="list-style-type: none;">
+					<li>				<img src="img/data/img01.png" width="60" onclick="return sampleFunc(this);">
+						<img src="img/data/img02.png" width="60" onclick="return sampleFunc(this);">
+					</li>
+					<li>
+						<img src="img/data/img03.png" width="60" onclick="return sampleFunc(this);">
+						<img src="img/data/img04.png" width="60" onclick="return sampleFunc(this);">
+					</li>
+					<li><img src="img/data/img05.png" width="60" onclick="return sampleFunc(this);">
+						<img src="img/data/img06.png" width="60" onclick="return sampleFunc(this);">
+						</li>
+					<li>
+						<img src="img/data/img07.png" width="60" onclick="return sampleFunc(this);">
+						<img src="img/data/img08.png" width="60" onclick="return sampleFunc(this);">
+					</li>
+					<li><img src="img/data/img09.png" width="60" onclick="return sampleFunc(this);">
+						<img src="img/data/img10.png" width="60" onclick="return sampleFunc(this);">
+						</li>
+					<li>
+						<img src="img/data/img11.png" width="60" onclick="return sampleFunc(this);">
+						<img src="img/data/img12.png" width="60" onclick="return sampleFunc(this);">
+					</li>
+					<li><img src="img/data/img13.png" width="60" onclick="return sampleFunc(this);">
+						<img src="img/data/img14.png" width="60" onclick="return sampleFunc(this);">
+						</li>
+					<li>
+						<img src="img/data/img15.png" width="60" onclick="return sampleFunc(this);">
+						<img src="img/data/img16.png" width="60" onclick="return sampleFunc(this);">
+					</li>
+					
+				</ul>
+			</nav>
+						<div id="channelForm" class="form-inline">
+									
+			<h1>EasyMeat</h1>
+			<p>”集まる”ことを、もっとわくわくしたものに。</p>
+		</header>
+		<!--<section>
+			<h2>説明</h2>
+			<p>合言葉と名前を入れてボタンを押してね！</p>
+			-->
+			
+			
+		</section>
+		
+		<footer>
+			<h1>Created by</h1>
+			<p>Going My Way</p>
+		</footer>
+ 
+				<label for="nameBox">合言葉を入れてください </label>
+<input id="enter" style="width: 200px;" type="text" name="enter" value="" /><br><br>
+
+
 				<label for="nameBox">名前を入れてください </label>
-				<input type="text" id="nameBox"/>
+				<input type="text" id="nameBox"/><br><br>
 				<button id="createChannel" class="btn" type="submit">デモ版の部屋に入る</button>
 			</div>
 		</div>
@@ -44,17 +119,18 @@
     <div class="tab-content">
     <div class="tab-pane active" id="1">
 	<button id="reload" class="btn" type="submit">再読み込み</button>
-    <div id="map_canvas" class="span8" style="min-height: 500px;"></div>
+    <div id="map_canvas" class="span8" style="min-height: 400px;"></div>
     </div>
     <div class="tab-pane" id="2">
     <div id="chatContainer" class="chat-container span4" style="min-height: 500px;"></div>
     </div>
 	<div class="tab-pane" id="3">
-	<div id="direction-panel"></div>
+	<div id="direction-panel" style="min-height: 400px;"></div>
     </div>
 	<div class="tab-pane" id="4">
 	 <!-- Main -->
   <div class="main">
+  <div>
     <div class="toolbar">
       <ul>
         <li id="black"> </li>
@@ -71,6 +147,7 @@
     <div class="canvas"><canvas id="myCanvas"></canvas></div>
 
 	<input id="delete_button" class="btn" type="submit"/>
+	</div>
   </div>
     </div>
     </div>
@@ -80,41 +157,42 @@
 		</div>
 </div>		
 <div id="messageBoxContainer" class="follow" >
-		<img src="img/data/img01.png" width="20" onclick="return sampleFunc(this);">
-<img src="img/data/img02.png" width="20" onclick="return sampleFunc(this);">
-<img src="img/data/img03.png" width="20" onclick="return sampleFunc(this);">
-<img src="img/data/img04.png" width="20" onclick="return sampleFunc(this);"><br>
-<img src="img/data/img05.png" width="20" onclick="return sampleFunc(this);">
-<img src="img/data/img06.png" width="20" onclick="return sampleFunc(this);">
-<img src="img/data/img07.png" width="20" onclick="return sampleFunc(this);">
-<img src="img/data/img08.png" width="20" onclick="return sampleFunc(this);"><br>
-<img src="img/data/img09.png" width="20" onclick="return sampleFunc(this);">
-<img src="img/data/img10.png" width="20" onclick="return sampleFunc(this);">
-<img src="img/data/img11.png" width="20" onclick="return sampleFunc(this);">
-<img src="img/data/img12.png" width="20" onclick="return sampleFunc(this);"><br>
-<img src="img/data/img13.png" width="20" onclick="return sampleFunc(this);">
-<img src="img/data/img14.png" width="20" onclick="return sampleFunc(this);">
-<img src="img/data/img15.png" width="20" onclick="return sampleFunc(this);">
-<img src="img/data/img16.png" width="20" onclick="return sampleFunc(this);">
+ <nav id="mobile-bar"></nav>
+
 	</div>
 </body>
-<script src="/socket.io/socket.io.js"></script>
-<script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js"></script>
 
-<script type="text/javascript"
-      src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDVPtUwnFXt0-wEylg3qIQUaBoS2RAv5CE&sensor=true">
-</script>
-<script type="text/javascript" src="/js/bootstrap.min.js"></script>
-<script type="text/javascript" src="/js/xmartutil.js"></script>
-<script type="text/javascript" src="/js/xmartlocator.js"></script>
-<script type="text/javascript" src="/js/xmartchat.js"></script>
-<script type="text/javascript" src="/js/autogrow.js"></script>
-<script type="text/javascript" src="/js/infobox.js"></script>
-<script type="text/javascript" src="/js/bootstrap-tab.js"></script>
+
 
 <script>
+
 var socket = io.connect(window.location.hostname);
 xmartlabslocator.initialize(socket,'map_canvas');
+function GetCookie( name )
+{
+    var result = null;
+
+    var cookieName = name + '=';
+    var allcookies = document.cookie;
+
+    var position = allcookies.indexOf( cookieName );
+    if( position != -1 )
+    {
+        var startIndex = position + cookieName.length;
+
+        var endIndex = allcookies.indexOf( ';', startIndex );
+        if( endIndex == -1 )
+        {
+            endIndex = allcookies.length;
+        }
+
+        result = decodeURIComponent(
+            allcookies.substring( startIndex, endIndex ) );
+			
+    }
+
+    return result;
+}
 $(function clickNaCo(){
     $(".NaCo").live("click", function(){
         $(this).css("background-color", "#D6D6D6");
@@ -122,8 +200,13 @@ $(function clickNaCo(){
 });
 //サーバーに入るルーム名を送信
 function roomPut(){
+   
     var num = $("#enter").val();
     socket.emit("enter", {value: num});
+	/////////////////////////////////////////////////////////////////////////
+	document.cookie = 'EasyMeet-room=' + encodeURIComponent(num);
+	
+	
 }
 
 function sampleFunc(obj) {
@@ -134,6 +217,15 @@ xmartlabschat.sendMessage("<img src=\"" + obj.src + "\" width=\"50\" align=\"cen
 return false;
 }
  window.addEventListener("load", function () {
+ ////////////////////////////////////////////////////////////////////////////////////////////////////
+// alert(GetCookie('EasyMeet-room'));
+ 	$("body").mobile_menu({
+					menu: ['#main-nav ul', '#secondary-nav ul'],
+      		menu_width: 200,
+      		prepend_button_to: '#mobile-bar',
+			button_content:'スタンプ'
+				});
+ 
 	
 $('#content').hide();
 
@@ -168,6 +260,7 @@ socket.on("roomDel", function(roomList){
 		$("#userGreeting").html("こんにちは "+username+"さん!");
 		
 		xmartlabschat.initialize(username, socket, "chatContainer");    
+		xmartlabslocator.loadMs();
 		//xmartlabslocator.initialize(socket,'map_canvas');
 	}
 
@@ -181,12 +274,14 @@ $('#reload').on('click',function(){
 			xmartlabslocator.roloadMap();
 			
 		});
+		
 	var username = getUrlParameter("username");
 	if(username) {
 		loadWorldChat(username);
 	} else {		
 		$('#createChannel').on('click',function(){
 			username = $("#nameBox").val();
+			roomPut();
 			loadWorldChat(username);
 		});
 	}   
@@ -326,7 +421,9 @@ $('#reload').on('click',function(){
   if (event.touches[0].target.tagName.toLowerCase() == "button") {return;}
   if (event.touches[0].target.tagName.toLowerCase() == "a") {return;}
   if (event.touches[0].target.tagName.toLowerCase() == "textarea") {return;}
- //event.preventDefault();
+  if (event.touches[0].target.tagName.toLowerCase() == "img") {return;}
+  if(((event.touches[0].target || event.touches[0].srcElement).id == 'build-menu-overlay')){return;}
+ event.preventDefault();
  
 }
 

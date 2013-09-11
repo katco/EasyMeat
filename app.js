@@ -36,6 +36,7 @@ var connectedUsers = {};
 var count = 0;
 var roomList = new Object();
 var jsonBoth = {};
+  var room;
  
 function htmlspecialchars(ch) { 
     
@@ -118,14 +119,14 @@ if(roomList){
   // 自由にネーミング出来るようになったようです。便利！！
   socket.on("draw", function (data) {
     console.log(data);
-    socket.broadcast.emit("draw", data);
+    socket.broadcast.to(room).emit("draw", data);
   });
 
   // 色変更情報がクライアントからきたら、
   // 他ユーザーへ変更後の色を通知します。
   socket.on("color", function (color) {
     console.log(color);
-    socket.broadcast.emit("color", color);
+    socket.broadcast.to(room).emit("color", color);
 	
   });
 
@@ -133,18 +134,18 @@ if(roomList){
   // 他ユーザーへ変更後の線の太さを通知します。
   socket.on("lineWidth", function (width) {
     console.log(width);
-    socket.broadcast.emit("lineWidth", width);
+    socket.broadcast.to(room).emit("lineWidth", width);
   });
   
   socket.on("clear", function () {
     console.log(width);
-    socket.broadcast.emit("clear");
+    socket.broadcast.to(room).emit("clear");
   });
   // 目的地の変更情報がクライアントからきたら、
   // 他ユーザーへ変更後の目的地を通知します。
   socket.on("updateGoal", function (event) {
   
-    var room;
+  
         socket.get('room', function(err, _room) {
             room = _room;
         });
@@ -155,10 +156,14 @@ if(roomList){
  
 
   socket.on('join', function(user, sendKey) {
-   
+  
+        socket.get('room', function(err, _room) {
+            room = _room;
+        });
     user.key = Date.now();
     socket.set('userkey', user.key);
     sendKey(user.key);
+	user.room = room;
 
     connectedUsers[user.key] = user;
 	
@@ -167,7 +172,7 @@ if(roomList){
 
   socket.on('message', function(msg) {
   
-   var room;
+   
         socket.get('room', function(err, _room) {
             room = _room;
         });
@@ -191,19 +196,22 @@ if(roomList){
 
   socket.on("send location", function(data) {
   
-  var room;
+
         socket.get('room', function(err, _room) {
             room = _room;
         });
  
     socket.get('userkey', function(err, key) {
       var user = connectedUsers[key];
-	  console.log(key);
+	 
       if(user) {
+	   console.log("send locationaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa");
         user.lat = data.lat;
         user.lng = data.lng;
-        data.name = user.name
+		user.room = room;
+        data.name = user.name;
         data.key = key;
+		
 	
         socket.broadcast.to(room).emit("location update", data);
       }
@@ -212,6 +220,12 @@ if(roomList){
 
   socket.on("request locations", function(sendData) {
     sendData(connectedUsers);
+	console.log("request locationsssssssssssssssssssssssssssssssssssssss");
+	console.log(connectedUsers);
+	
+  });
+  socket.on("set goal from iphone", function(string) {
+    console.log(string);
 	
   });
 
@@ -219,7 +233,7 @@ if(roomList){
 
    count--;
  
-        var room;
+     
  
         socket.get('room', function(err, _room){
             room = _room;
