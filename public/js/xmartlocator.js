@@ -1,6 +1,6 @@
 ﻿var xmartlabslocator = {};
 (function(publicScope) {
-	var webSocket, map, markers, myMarker,clickMarker;
+	var webSocket, map, markers, myMarker,clickMarker,gps_id;
 	var directionsDisplay;
 	var directionsService = new google.maps.DirectionsService();
 	var direct_start;
@@ -48,15 +48,24 @@
 		webSocket.on('set room name', function (name) {
 		 
 			room = name;
-			xmartlabsutil.geolocation(showPosition);
+			
+			 
+			
 			
 			
 			});
-		
-		
+		xmartlabsutil.geolocation(showPosition);
+		 setInterval(function(){reloadmap();},5000);
 		$(document).on('click', ".sender", showUserLocation);
 	}
-	
+
+
+    function reloadmap(){
+	   
+		xmartlabsutil.geolocation(showPosition2);
+		
+
+    }	
 	//クリックしたときのイベント
 	publicScope.roloadMap = function() {
 	
@@ -271,7 +280,7 @@ function computeDuration(ms){
 	}
 
 	function showPosition(position) {
-	
+	 
 		var data = {
 			lat : position.coords.latitude,
 			lng : position.coords.longitude,
@@ -284,6 +293,26 @@ function computeDuration(ms){
 	
 		
 		map.setCenter(myMarker.getPosition());
+       
+		//webSocket.to(room).emit("send location",data);
+		webSocket.emit("send location",data);
+		//webSocket.broadcast.emit("send location",data);
+	}
+	
+	function showPosition2(position) {
+	 
+		var data = {
+			lat : position.coords.latitude,
+			lng : position.coords.longitude,
+		}
+      
+		myMarker = getMarker(data.lat, data.lng, 'Me');
+	
+		
+	direct_start = new google.maps.LatLng(data.lat, data.lng);
+	
+		
+		//map.setCenter(myMarker.getPosition());
        
 		//webSocket.to(room).emit("send location",data);
 		webSocket.emit("send location",data);
@@ -304,6 +333,8 @@ function computeDuration(ms){
 				alert("The user is no longer connected (or did not share his location)");
 		}
 	}
+	
+	
 
 	function updateMarker(data) {
 	

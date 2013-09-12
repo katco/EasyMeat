@@ -91,15 +91,15 @@
 		</section>
 		
 		<footer>
-			<h1>Created by</h1>
-			<p>Going My Way</p>
+			<h1>説明</h1>
+			<p>合言葉と名前を入れてボタンをおしてね！</p>
 		</footer>
  
-				<label for="nameBox">合言葉を入れてください </label>
+				<label for="nameBox"><b>合言葉:</b> </label>
 <input id="enter" style="width: 200px;" type="text" name="enter" value="" /><br><br>
 
 
-				<label for="nameBox">名前を入れてください </label>
+				<label for="nameBox"><b>名前:</b> </label>
 				<input type="text" id="nameBox"/><br><br>
 				<button id="createChannel" class="btn" type="submit">デモ版の部屋に入る</button>
 			</div>
@@ -243,7 +243,9 @@ return false;
 }
  window.addEventListener("load", function () {
  ////////////////////////////////////////////////////////////////////////////////////////////////////
-$('#toggle').toggle(function(){
+
+
+ $('#toggle').toggle(function(){
 		alert("on");
 	},
 	function(){
