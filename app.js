@@ -188,6 +188,8 @@ if(roomList){
         };
         //socket.to(room).emit('new chat msg',data);
 		socket.broadcast.to(room).emit('new chat msg',data);
+		console.log('new chat msg');
+		console.log(data);
 
 		
       }
@@ -205,7 +207,7 @@ if(roomList){
       var user = connectedUsers[key];
 	 
       if(user) {
-	   console.log("send locationaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa");
+	  
         user.lat = data.lat;
         user.lng = data.lng;
 		user.room = room;
@@ -220,12 +222,22 @@ if(roomList){
 
   socket.on("request locations", function(sendData) {
     sendData(connectedUsers);
-	console.log("request locationsssssssssssssssssssssssssssssssssssssss");
+	console.log("request locations");
 	console.log(connectedUsers);
 	
   });
-  socket.on("set goal from iphone", function(string) {
-    console.log(string);
+  socket.on("set goal from iphone", function(data) {
+    console.log(data);
+	console.log(data.name);
+	console.log(data.lat);
+	console.log(data.lng);
+	console.log(data.time);
+	console.log(data.room);
+	console.log(data.person);
+	
+	
+	socket.broadcast.to(data.room).emit("send new goal from iphone", data);
+    socket.to(data.room).emit("send new goal from iphone", data);
 	
   });
 

@@ -3,7 +3,9 @@
   position: relative;
   background-color: #fff;
 }
-
+#mobile-bar{
+	margin-left: 20px;
+}
 #build-menu {
 	visibility: visible;
 	z-index: 0;

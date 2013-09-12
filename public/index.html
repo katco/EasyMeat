@@ -35,16 +35,17 @@
 <script type="text/javascript" src="/js/bootstrap-tab.js"></script>
 </head>
 <body>	
-<!--
+
 	<div class="container">
 		<div class="row-fluid">	
-		-->
+		
 
 
 
 
 			<nav id="main-nav">
 				<ul style="list-style-type: none;">
+				
 					<li>				<img src="img/data/img01.png" width="60" onclick="return sampleFunc(this);">
 						<img src="img/data/img02.png" width="60" onclick="return sampleFunc(this);">
 					</li>
@@ -106,23 +107,24 @@
 		<div id="content">
 		
 		<div class="row-fluid">	
-		
+		<!--
 		 <div id="port-box"></div>
  
-<div id="list-box"></div>		
+<div id="list-box"></div>
+ -->		
 
 
 <div class="tabbable">
 <ul class="nav nav-tabs">
     <li class="active"><a href="#1" data-toggle="tab">マップ</a></li>
     <li><a href="#2" data-toggle="tab">ペイント</a></li>
-	 <li><a href="#3" data-toggle="tab">会話ログ</a></li>
+	 <li><a href="#3" data-toggle="tab">会話</a></li>
 	 <li><a href="#4" data-toggle="tab">ナビ</a></li>
     </ul>
     <div class="tab-content">
     <div class="tab-pane active" id="1">
 	<button id="reload" class="btn" type="submit">再読み込み</button>
-    <div id="map_canvas" class="span8" style="min-height: 320px;"></div>
+    <div id="map_canvas" class="span8" style="min-height: 300px;"></div>
     </div>
     <div class="tab-pane" id="2">
 		 <!-- Main -->
@@ -133,7 +135,7 @@
 				<li id="black"> </li>
 				<li id="blue"></li>
 				<li id="red"></li>
-				<li id="green"></li>
+			
 				<li id="small">S</li>
 				<li id="middle">M</li>
 				<li id="large">L</li>
@@ -143,17 +145,19 @@
 				
 			<div class="canvas"><canvas id="myCanvas"></canvas></div>
 
-			<input id="delete_button" class="btn" type="submit"/>
+			<!--<input id="delete_button" class="btn" type="submit"/>-->
 			</div>
 		  </div>
 	
     
     </div>
 	<div class="tab-pane" id="3">
-		<div id="direction-panel" style="min-height: 380px;"></div>
+	<nav id="mobile-bar"></nav>
+		<div id="chatContainer" class="chat-container span4" style="min-height: 300px;"></div>	
     </div>
 	<div class="tab-pane" id="4">
-		<div id="chatContainer" class="chat-container span4" style="min-height: 500px;"></div>	
+	<div id="direction-panel" style="min-height: 300px;"></div>
+		
     </div>
     </div>
     </div>		
@@ -162,7 +166,7 @@
 		</div>
 </div>		
 <div id="messageBoxContainer" class="follow" >
- <nav id="mobile-bar"></nav>
+  
 
 	</div>
 </body>
@@ -172,7 +176,7 @@
 <script>
 
 var socket = io.connect(window.location.hostname);
-xmartlabslocator.initialize(socket,'map_canvas');
+//xmartlabslocator.initialize(socket,'map_canvas');
 function GetCookie( name )
 {
     var result = null;
@@ -219,11 +223,22 @@ function sampleFunc(obj) {
 
 //socket.emit("message", "<img src=\"" + obj.src + "\" width=\"50\" align=\"center\">");
 xmartlabschat.sendMessage("<img src=\"" + obj.src + "\" width=\"50\" align=\"center\">");
+alert("スタンプを送信しました。");
 return false;
 }
  window.addEventListener("load", function () {
  ////////////////////////////////////////////////////////////////////////////////////////////////////
-// alert(GetCookie('EasyMeet-room'));
+
+if(GetCookie('EasyMeet-room') != null && GetCookie('EasyMeet-room') != ""){
+
+ $("#enter").val(GetCookie('EasyMeet-room'));
+}
+
+if(GetCookie('EasyMeet-name') != null && GetCookie('EasyMeet-name') != ""){
+ $("#nameBox").val(GetCookie('EasyMeet-name'));
+}
+ 
+ 
  	$("body").mobile_menu({
 					menu: ['#main-nav ul', '#secondary-nav ul'],
       		menu_width: 200,
@@ -259,12 +274,17 @@ socket.on("roomDel", function(roomList){
         }
     }
 });
-	function loadWorldChat(username){		
+	function loadWorldChat(username){	
+	
 		$('#channelForm').hide();
 		$('#content').show();
 		$("#userGreeting").html("こんにちは "+username+"さん!");
+		//クッキーに保存
+		document.cookie = 'EasyMeet-name=' + encodeURIComponent(username);
 		
-		xmartlabschat.initialize(username, socket, "chatContainer");    
+		xmartlabschat.initialize(username, socket, "chatContainer");   
+xmartlabslocator.initialize(socket,'map_canvas');	
+        
 		xmartlabslocator.loadMs();
 		//xmartlabslocator.initialize(socket,'map_canvas');
 	}
@@ -282,12 +302,17 @@ $('#reload').on('click',function(){
 		
 	var username = getUrlParameter("username");
 	if(username) {
+	
 		loadWorldChat(username);
+		
 	} else {		
+;
 		$('#createChannel').on('click',function(){
+		
 			username = $("#nameBox").val();
 			roomPut();
 			loadWorldChat(username);
+			
 		});
 	}   
 	

@@ -41,13 +41,17 @@
 		
 		//追加
 		webSocket.on('new chat msg', receiveChatMessage);
-
+       
 		webSocket.on('send new goal',updateGoalPos);
+		
+		webSocket.on('send new goal from iphone',updateGoalPosFromI);
 		webSocket.on('set room name', function (name) {
 		 
 			room = name;
 			xmartlabsutil.geolocation(showPosition);
-		});
+			
+			
+			});
 		
 		
 		$(document).on('click', ".sender", showUserLocation);
@@ -69,23 +73,67 @@
 	
 	  function mylistener(event) {
 	console.log("mylistener:"+event);
-	str = prompt("合言葉は？","");
-
-//strが空の場合の処理
-if (str == ""){
-alert("空だよ");
-return;
-}else if(str == null){
-alert("null");
-return;
-}else{
-alert("いいね");
-}
+	 ret = confirm("このポイントを目的地に設定しますか？");
+  if (ret == true){
+    
+  }else{
+	return;
+  }
+	
 		  //ソケットで目的地変更のイベントを送信
 		  webSocket.emit('updateGoal', event);
 
 	  
     }
+	function updateGoalPosFromI(data){
+		////////////////////////////
+	timeToGoal  = +new Date() + 54981249;
+	timeDiff = timeToGoal - new Date();
+	
+	////////////////////////////
+	
+		if(!clickMarker){
+			  
+			  
+			  clickMarker = getMarker(data.lat, data.lng, 'click');
+			  //directionを初期化
+			
+			  directionsDisplay = new google.maps.DirectionsRenderer();
+			  directionsDisplay.setOptions(
+			 {
+				suppressMarkers: true
+			 });
+				directionsDisplay.draggable = true;
+				directionsDisplay.setMap(map);
+				 panelDiv = document.getElementById('direction-panel');
+				directionsDisplay.setPanel(panelDiv);
+				//console.log(panelDiv);
+				direct_end = new google.maps.LatLng(data.lat, data.lng);	  
+				calcRoute();
+				//マーカーを設置
+				clickMarker.setIcon("https://chart.googleapis.com/chart?chst=d_simple_text_icon_above&chld=目的地|24|00F|glyphish_flag|24|F88|FFF");
+			  //clickloop();
+			}else{
+			
+					  clickMarker.setPosition(new google.maps.LatLng(data.lat, data.lng));	
+					direct_end = new google.maps.LatLng(data.lat, data.lng);	
+				calcRoute();
+			  
+			  }
+			  
+	  var canvas = document.getElementById("myCanvas");
+      var c = canvas.getContext("2d");
+	   var img = new Image();
+	  img.src = "http://maps.google.com/maps/api/staticmap?center=" + event.latLng.pb + "," + event.latLng.qb + "&zoom=16&size=320x320&sensor=false";
+	  /* 画像を描画 */
+	 // alert(img.src);
+	  img.onload = function() {
+		c.drawImage(img, 0, 0);
+	
+  }
+	
+	}
+	
 	function updateGoalPos(event) {
 	
 	var str;  //入力文字を入れる変数
@@ -98,7 +146,7 @@ alert("いいね");
 	
 	////////////////////////////
 	
-				 if(!clickMarker){
+		if(!clickMarker){
 			  
 			  
 			  clickMarker = getMarker(event.latLng.pb, event.latLng.qb, 'click');
@@ -111,20 +159,23 @@ alert("いいね");
 			 });
 				directionsDisplay.draggable = true;
 				directionsDisplay.setMap(map);
+				 panelDiv = document.getElementById('direction-panel');
 				directionsDisplay.setPanel(panelDiv);
+				//console.log(panelDiv);
 				direct_end = new google.maps.LatLng(event.latLng.pb, event.latLng.qb);	  
 				calcRoute();
-				
-			  clickloop();
-			  }else{
+				//マーカーを設置
+				clickMarker.setIcon("https://chart.googleapis.com/chart?chst=d_simple_text_icon_above&chld=目的地|24|00F|glyphish_flag|24|F88|FFF");
+			  //clickloop();
+			}else{
 			
-			  clickMarker.setPosition(new google.maps.LatLng(event.latLng.pb, event.latLng.qb));	
-			direct_end = new google.maps.LatLng(event.latLng.pb, event.latLng.qb);	
-		calcRoute();
+					  clickMarker.setPosition(new google.maps.LatLng(event.latLng.pb, event.latLng.qb));	
+					direct_end = new google.maps.LatLng(event.latLng.pb, event.latLng.qb);	
+				calcRoute();
 			  
 			  }
 			  
-			  var canvas = document.getElementById("myCanvas");
+	  var canvas = document.getElementById("myCanvas");
       var c = canvas.getContext("2d");
 	   var img = new Image();
   img.src = "http://maps.google.com/maps/api/staticmap?center=" + event.latLng.pb + "," + event.latLng.qb + "&zoom=16&size=320x320&sensor=false";
@@ -166,7 +217,7 @@ function computeDuration(ms){
 }
 	//ルート計算
 	function calcRoute() {
-	   
+	  
 		var request = {
 			origin : direct_start,
 			destination : direct_end,
@@ -174,6 +225,7 @@ function computeDuration(ms){
 		};
 		directionsService.route(request, function(response, status) {
 			if(status == google.maps.DirectionsStatus.OK) {
+			 
 				directionsDisplay.setDirections(response);
 				
 			}
@@ -224,12 +276,12 @@ function computeDuration(ms){
 			lat : position.coords.latitude,
 			lng : position.coords.longitude,
 		}
-
+      
 		myMarker = getMarker(data.lat, data.lng, 'Me');
-		
+	
 		
 	direct_start = new google.maps.LatLng(data.lat, data.lng);
-	alert(direct_start);
+	
 		
 		map.setCenter(myMarker.getPosition());
        
@@ -239,7 +291,7 @@ function computeDuration(ms){
 	}
 
 	function showUserLocation(event){
-	
+		
 		event.preventDefault();
 		var key = $(event.currentTarget).data("key");
 		if(key == xmartlabschat.user.key)
@@ -303,7 +355,7 @@ function computeDuration(ms){
 	}
 	
 	function receiveChatMessage(data) {
-	
+	//alert("receiveChatMessage");
 //	 var boxText = document.createElement("div");
  //       boxText.style.cssText = "border: 1px solid black; margin-top: 8px; background: #ffffff; padding: 5px;";
   //      boxText.innerHTML = "<h5>"+data.sender + ":</h5><h4>" +data.message + "</h4>";
@@ -317,7 +369,7 @@ function computeDuration(ms){
  // pixelOffset: new google.maps.Size(-140, -12), 
  // infoBoxClearance: new google.maps.Size(1, 1) 
                 
-   ///             ,closeBoxMargin: "10px 2px 2px 2px"
+   //            ,closeBoxMargin: "10px 2px 2px 2px"
    //             ,closeBoxURL: "http://www.google.com/intl/en_us/mapfiles/close.gif"
                
    //     };
@@ -325,8 +377,10 @@ function computeDuration(ms){
      //   var infoBox = new InfoBox(myOptions);
     //    infoBox.open(map,myMarker);
 		//addChatMessage(data.sender, data.key, data.message);
+		
 		infowindow=new google.maps.InfoWindow({
   /* 情報ウィンドウのオプション設定 */
+ 
 	content: data.message
 	});
 	infowindow.open(map,markers[data.key]);

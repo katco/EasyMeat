@@ -113,6 +113,7 @@
 		messagesList = $('<ul>').addClass('chat-messages-list');
 		messageBox = $('<textarea>').attr("placeholder","メッセージを入力してください");
 		sendButton = $('<button>').addClass("btn btn-mini btn-primary pull-right").attr('type','submit').html("送信");
+		
 		//var messageBoxContainer = $('<div>').addClass('chat-messagebox-container');
 var messageBoxContainer = $("#messageBoxContainer").addClass('chat-messagebox-container');
 
