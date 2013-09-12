@@ -55,13 +55,13 @@
 			
 			});
 		xmartlabsutil.geolocation(showPosition);
-		 setInterval(function(){reloadmap();},5000);
+		 setInterval(function(){reloadmap();},1000);
 		$(document).on('click', ".sender", showUserLocation);
 	}
 
 
     function reloadmap(){
-	   
+	  
 		xmartlabsutil.geolocation(showPosition2);
 		
 
@@ -287,7 +287,7 @@ function computeDuration(ms){
 		}
       
 		myMarker = getMarker(data.lat, data.lng, 'Me');
-	
+	 alert(data.lat,data.lng);
 		
 	direct_start = new google.maps.LatLng(data.lat, data.lng);
 	
@@ -305,13 +305,13 @@ function computeDuration(ms){
 			lat : position.coords.latitude,
 			lng : position.coords.longitude,
 		}
-      
+       alert(position.coords.latitude);
 		myMarker = getMarker(data.lat, data.lng, 'Me');
 	
 		
 	direct_start = new google.maps.LatLng(data.lat, data.lng);
 	
-		
+		 
 		//map.setCenter(myMarker.getPosition());
        
 		//webSocket.to(room).emit("send location",data);
