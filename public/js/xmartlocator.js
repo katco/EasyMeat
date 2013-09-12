@@ -305,7 +305,7 @@ function computeDuration(ms){
 			lat : position.coords.latitude,
 			lng : position.coords.longitude,
 		}
-       alert(position.coords.latitude);
+       //alert(position.coords.latitude);
 		myMarker = getMarker(data.lat, data.lng, 'Me');
 	
 		
