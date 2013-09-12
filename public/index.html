@@ -120,11 +120,21 @@
     <li><a href="#2" data-toggle="tab">ペイント</a></li>
 	 <li><a href="#3" data-toggle="tab">会話</a></li>
 	 <li><a href="#4" data-toggle="tab">ナビ</a></li>
-    </ul>
+</ul>
     <div class="tab-content">
     <div class="tab-pane active" id="1">
-	<button id="reload" class="btn" type="submit">再読み込み</button>
-    <div id="map_canvas" class="span8" style="min-height: 300px;"></div>
+	
+	
+<div>	
+<button id="reload" class="btn" type="submit" style="float:right">再読み込み</button><br>
+
+    <div id="map_canvas" class="span8" style="min-height: 250px;"></div>
+	
+	
+	<textarea id="msgBox" placeholder="メッセージを入力してください"></textarea>
+<button id="sendButton"class="btn btn-mini btn-primary" type="submit" >送信</button>
+	
+	</div>
     </div>
     <div class="tab-pane" id="2">
 		 <!-- Main -->
@@ -152,11 +162,16 @@
     
     </div>
 	<div class="tab-pane" id="3">
-	<nav id="mobile-bar"></nav>
-		<div id="chatContainer" class="chat-container span4" style="min-height: 300px;"></div>	
-    </div>
+		<nav id="mobile-bar"></nav>
+		<div id="chatContainer" class="chat-container span4" style="height: 3200px;"></div>
+		<div class="follow">		
+				<textarea id="msgBox2" placeholder="メッセージを入力してください"></textarea>
+		<button id="sendButton2"class="btn btn-mini btn-primary" type="submit" >送信</button>
+		</div>
+	</div>
+
 	<div class="tab-pane" id="4">
-	<div id="direction-panel" style="min-height: 300px;"></div>
+		<div id="direction-panel" style="min-height: 250px;"></div>
 		
     </div>
     </div>
@@ -165,7 +180,7 @@
 			
 		</div>
 </div>		
-<div id="messageBoxContainer" class="follow" >
+
   
 
 	</div>
@@ -228,7 +243,12 @@ return false;
 }
  window.addEventListener("load", function () {
  ////////////////////////////////////////////////////////////////////////////////////////////////////
-
+$('#toggle').toggle(function(){
+		alert("on");
+	},
+	function(){
+		alert("off");
+	})
 if(GetCookie('EasyMeet-room') != null && GetCookie('EasyMeet-room') != ""){
 
  $("#enter").val(GetCookie('EasyMeet-room'));
@@ -243,7 +263,7 @@ if(GetCookie('EasyMeet-name') != null && GetCookie('EasyMeet-name') != ""){
 					menu: ['#main-nav ul', '#secondary-nav ul'],
       		menu_width: 200,
       		prepend_button_to: '#mobile-bar',
-			button_content:'スタンプ'
+			button_content:'スタンプ show/hide'
 				});
  
 	
@@ -319,8 +339,8 @@ $('#reload').on('click',function(){
       // Canvas描画に必要な変数を定義する
       var canvas = document.getElementById("myCanvas");
       var c = canvas.getContext("2d");
-      var w = 320;
-      var h = 320;
+      var w = 250;
+      var h = 250;
       var drawing = false;
       var oldPos;
 
@@ -332,7 +352,7 @@ $('#reload').on('click',function(){
       c.lineJoin = "round";
       c.lineCap = "round";
 	        var img = new Image();
-  img.src = "http://maps.google.com/maps/api/staticmap?center=38.754083,139.570313&zoom=4&size=320x320&sensor=false";
+  img.src = "http://maps.google.com/maps/api/staticmap?center=38.754083,139.570313&zoom=4&size=250x250&sensor=false";
   /* 画像を描画 */
   img.onload = function() {
     c.drawImage(img, 0, 0);
@@ -452,7 +472,12 @@ $('#reload').on('click',function(){
   if (event.touches[0].target.tagName.toLowerCase() == "a") {return;}
   if (event.touches[0].target.tagName.toLowerCase() == "textarea") {return;}
   if (event.touches[0].target.tagName.toLowerCase() == "img") {return;}
+  if (event.touches[0].target.tagName.toLowerCase() == "div") {return;}
+  if (event.touches[0].target.tagName.toLowerCase() == "td") {return;}
+  if (event.touches[0].target.tagName.toLowerCase() == "b") {return;}
   if(((event.touches[0].target || event.touches[0].srcElement).id == 'build-menu-overlay')){return;}
+   if(((event.touches[0].target || event.touches[0].srcElement).id == 'direction-panel')){return;}
+    //if(((event.touches[0].target || event.touches[0].srcElement).id == 'build-menu-overlay')){return;}
  event.preventDefault();
  
 }

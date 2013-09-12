@@ -73,9 +73,9 @@
 
 #build-menu-button{
 	display: block;
-	width: 60px;text-align: center;
+	width: 80px;text-align: center;
 	background:#808080;
-	padding:6px 12px;
+	padding:4px 6px;
 	border-radius: 4px;
 	color: #FFF;
 }

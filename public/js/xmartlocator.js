@@ -124,7 +124,7 @@
 	  var canvas = document.getElementById("myCanvas");
       var c = canvas.getContext("2d");
 	   var img = new Image();
-	  img.src = "http://maps.google.com/maps/api/staticmap?center=" + event.latLng.pb + "," + event.latLng.qb + "&zoom=16&size=320x320&sensor=false";
+	  img.src = "http://maps.google.com/maps/api/staticmap?center=" + event.latLng.pb + "," + event.latLng.qb + "&zoom=16&size=250x250&sensor=false";
 	  /* 画像を描画 */
 	 // alert(img.src);
 	  img.onload = function() {

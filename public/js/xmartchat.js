@@ -3,7 +3,7 @@
 
 	var user = {};
 	var users = {};
-	var usersCount, messagesListContainer, messagesList, messageBox, sendButton;
+	var usersCount, messagesListContainer, messagesList, messageBox, sendButton,messageBox2, sendButton2;
 	
 	publicScope.users = users;
 	publicScope.user = user;
@@ -51,7 +51,14 @@
 	function receiveChatMessage(data) {
 		addChatMessage(data.sender, data.key, data.message);
 	}
-
+    function sendChatMessage2(){
+	 if(/\S/.test(messageBox2.val())){
+			var messageVal2 = messageBox2.val().replace(/\n/g,"<br/>");
+			messageBox2.val('');		
+			addChatMessage(user.name, user.key, messageVal2);
+			webSocket.send(messageVal2);
+		}
+	}
 	function sendChatMessage() {
 		if(/\S/.test(messageBox.val())){
 			var messageVal = messageBox.val().replace(/\n/g,"<br/>");
@@ -66,7 +73,13 @@
 			webSocket.send(message);
 	}
 	
-	
+	function onChatKeyPress2(event) {
+		// If the user has pressed enter
+		if(event.which == 13 && !event.shiftKey) {
+			event.preventDefault();
+			sendChatMessage2();
+		}
+	}
 
 	function onChatKeyPress(event) {
 		// If the user has pressed enter
@@ -111,23 +124,27 @@
 
 		messagesListContainer = $("<div>").addClass('chat-messages-container');
 		messagesList = $('<ul>').addClass('chat-messages-list');
-		messageBox = $('<textarea>').attr("placeholder","メッセージを入力してください");
-		sendButton = $('<button>').addClass("btn btn-mini btn-primary pull-right").attr('type','submit').html("送信");
-		
+		messageBox = $('#msgBox');//$('<textarea>').attr("placeholder","メッセージを入力してください");
+		sendButton = $('#sendButton');//$('<button>').addClass("btn btn-mini btn-primary pull-right").attr('type','submit').html("送信");
+		messageBox2 = $('#msgBox2');//$('<textarea>').attr("placeholder","メッセージを入力してください");
+		sendButton2 = $('#sendButton2');//$('<button>').addClass("btn btn-mini btn-primary pull-right").attr('type','submit').html("送信");
 		//var messageBoxContainer = $('<div>').addClass('chat-messagebox-container');
 var messageBoxContainer = $("#messageBoxContainer").addClass('chat-messagebox-container');
 
 		messagesListContainer.append(messagesList);
-		messageBoxContainer.append(messageBox).append(sendButton);
+		//messageBoxContainer.append(messageBox).append(sendButton);
 		chatContainer.append(messagesListContainer)//.append(messageBoxContainer);
 
 		messageBox.on('keypress', onChatKeyPress);
-		sendButton.on('click', sendChatMessage);	
+		sendButton.on('click', sendChatMessage);
+		messageBox2.on('keypress', onChatKeyPress2);
+		sendButton2.on('click', sendChatMessage2);		
 
 		usersCount = $("#usersCount")
 		$("#usersCountContainer").show();
 
 		if(typeof $.fn.autogrow == 'function')
 			messageBox.autogrow();
+			messageBox2.autogrow();
 	}
 })(xmartlabschat);
