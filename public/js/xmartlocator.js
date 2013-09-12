@@ -287,7 +287,7 @@ function computeDuration(ms){
 		}
       
 		myMarker = getMarker(data.lat, data.lng, 'Me');
-	 alert(data.lat,data.lng);
+	 
 		
 	direct_start = new google.maps.LatLng(data.lat, data.lng);
 	
@@ -306,8 +306,14 @@ function computeDuration(ms){
 			lng : position.coords.longitude,
 		}
        //alert(position.coords.latitude);
-		myMarker = getMarker(data.lat, data.lng, 'Me');
-	
+		//myMarker = getMarker(data.lat, data.lng, 'Me');
+		if(myMarker) {
+			myMarker.setPosition(new google.maps.LatLng(data.lat,data.lng));
+			
+		} else {
+		
+			markers[data.key] = getMarker(data.lat, data.lng, 'Me');
+		}		
 		
 	direct_start = new google.maps.LatLng(data.lat, data.lng);
 	
