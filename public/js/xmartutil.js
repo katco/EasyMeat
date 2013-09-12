@@ -6,7 +6,7 @@ var xmartlabsutil = {};
 
 		if(navigator.geolocation) {
 		navigator.geolocation.getCurrentPosition(successHandler, errorHandler);
-		//navigator.geolocation.getCurrentPosition(successHandler, errorHandler,{frequency:5000,maximumAge: 0, timeout: 100000, enableHighAccuracy:false});
+		navigator.geolocation.getCurrentPosition(successHandler, errorHandler,{frequency:5000,maximumAge: 0, timeout: 100000, enableHighAccuracy:false});
 		} else {
 			alert("Geolocation is not supported by this browser.");
 		}

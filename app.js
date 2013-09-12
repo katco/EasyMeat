@@ -89,7 +89,7 @@ if(roomList){
 			
   
         }else if(roomList[data2name]){
-            if(roomList[data2name] >= 1 && roomList[data2name] < 4){
+            if(roomList[data2name] >= 1 && roomList[data2name] < 100){
                 //ルームが作られていて、人数が1～3人の場合
                 roomList[data2name]++;
  

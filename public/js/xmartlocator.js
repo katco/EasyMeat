@@ -32,7 +32,7 @@
 		};
 
 		map = new google.maps.Map(document.getElementById(mapId), mapOptions);
-		xmartlabsutil.geolocation(showPosition);
+		//xmartlabsutil.geolocation(showPosition);
 		google.maps.event.addListener(map, 'click', mylistener);
 
 		webSocket.on('location update', updateMarker);
@@ -166,7 +166,7 @@ function computeDuration(ms){
 }
 	//ルート計算
 	function calcRoute() {
-	 
+	   
 		var request = {
 			origin : direct_start,
 			destination : direct_end,
@@ -229,7 +229,7 @@ function computeDuration(ms){
 		
 		
 	direct_start = new google.maps.LatLng(data.lat, data.lng);
-	
+	alert(direct_start);
 		
 		map.setCenter(myMarker.getPosition());
        
@@ -272,7 +272,7 @@ function computeDuration(ms){
 
 	function loadMarkers(data) {
 	    
-	    
+	    //alert(xmartlabschat.user.name);
 		for(key in data) {
 	        
 			var user = data[key];
@@ -281,7 +281,13 @@ function computeDuration(ms){
 			//xmartlabschat.addUser(user);
 		
 			markers[key] = getMarker(user.lat, user.lng, user.name);
-			direct_start = new google.maps.LatLng(user.lat, user.lng);
+			if(user.key == xmartlabschat.user.key){
+				direct_start = new google.maps.LatLng(user.lat, user.lng);
+			}
+			
+			
+			
+			
 			
 			
 			
@@ -323,6 +329,6 @@ function computeDuration(ms){
   /* 情報ウィンドウのオプション設定 */
 	content: data.message
 	});
-	infowindow.open(map,myMarker);
+	infowindow.open(map,markers[data.key]);
 	}
 })(xmartlabslocator);

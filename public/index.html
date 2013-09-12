@@ -78,7 +78,7 @@
 			</nav>
 						<div id="channelForm" class="form-inline">
 									
-			<h1>EasyMeat</h1>
+			<h1>EasyMeet</h1>
 			<p>”集まる”ことを、もっとわくわくしたものに。</p>
 		</header>
 		<!--<section>
@@ -106,49 +106,54 @@
 		<div id="content">
 		
 		<div class="row-fluid">	
+		
 		 <div id="port-box"></div>
  
 <div id="list-box"></div>		
+
+
 <div class="tabbable">
 <ul class="nav nav-tabs">
     <li class="active"><a href="#1" data-toggle="tab">マップ</a></li>
-    <li><a href="#2" data-toggle="tab">ログ</a></li>
-	 <li><a href="#3" data-toggle="tab">ナビ</a></li>
-	 <li><a href="#4" data-toggle="tab">目印</a></li>
+    <li><a href="#2" data-toggle="tab">ペイント</a></li>
+	 <li><a href="#3" data-toggle="tab">会話ログ</a></li>
+	 <li><a href="#4" data-toggle="tab">ナビ</a></li>
     </ul>
     <div class="tab-content">
     <div class="tab-pane active" id="1">
 	<button id="reload" class="btn" type="submit">再読み込み</button>
-    <div id="map_canvas" class="span8" style="min-height: 400px;"></div>
+    <div id="map_canvas" class="span8" style="min-height: 320px;"></div>
     </div>
     <div class="tab-pane" id="2">
-    <div id="chatContainer" class="chat-container span4" style="min-height: 500px;"></div>
+		 <!-- Main -->
+		<div class="main">
+		  <div>
+			<div class="toolbar">
+			  <ul>
+				<li id="black"> </li>
+				<li id="blue"></li>
+				<li id="red"></li>
+				<li id="green"></li>
+				<li id="small">S</li>
+				<li id="middle">M</li>
+				<li id="large">L</li>
+			  </ul>
+			</div>
+			<div style="clear:left;"></div>
+				
+			<div class="canvas"><canvas id="myCanvas"></canvas></div>
+
+			<input id="delete_button" class="btn" type="submit"/>
+			</div>
+		  </div>
+	
+    
     </div>
 	<div class="tab-pane" id="3">
-	<div id="direction-panel" style="min-height: 400px;"></div>
+		<div id="direction-panel" style="min-height: 380px;"></div>
     </div>
 	<div class="tab-pane" id="4">
-	 <!-- Main -->
-  <div class="main">
-  <div>
-    <div class="toolbar">
-      <ul>
-        <li id="black"> </li>
-        <li id="blue"></li>
-        <li id="red"></li>
-        <li id="green"></li>
-        <li id="small">S</li>
-        <li id="middle">M</li>
-        <li id="large">L</li>
-      </ul>
-    </div>
-    <div style="clear:left;"></div>
-		
-    <div class="canvas"><canvas id="myCanvas"></canvas></div>
-
-	<input id="delete_button" class="btn" type="submit"/>
-	</div>
-  </div>
+		<div id="chatContainer" class="chat-container span4" style="min-height: 500px;"></div>	
     </div>
     </div>
     </div>		
