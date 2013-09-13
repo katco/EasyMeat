@@ -227,17 +227,11 @@ if(roomList){
 	
   });
   socket.on("set goal from iphone", function(data) {
-    console.log(data);
-	console.log(data.name);
-	console.log(data.lat);
-	console.log(data.lng);
-	console.log(data.time);
-	console.log(data.room);
-	console.log(data.person);
-	
+   
 	
 	socket.broadcast.to(data.room).emit("send new goal from iphone", data);
     socket.to(data.room).emit("send new goal from iphone", data);
+	console.log("xxxxxxxxxxxxxxxxxx");
 	
   });
 

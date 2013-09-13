@@ -55,7 +55,7 @@
 			
 			});
 		xmartlabsutil.geolocation(showPosition);
-		 setInterval(function(){reloadmap();},1000);
+		 setInterval(function(){reloadmap();},50000);
 		$(document).on('click', ".sender", showUserLocation);
 	}
 
@@ -96,15 +96,16 @@
     }
 	function updateGoalPosFromI(data){
 		////////////////////////////
-	timeToGoal  = +new Date() + 54981249;
-	timeDiff = timeToGoal - new Date();
+	
+	
+	document.getElementById("time").textContent="集合日時:"+ data.time;
+	//timeDiff = timeToGoal - new Date();
 	
 	////////////////////////////
-	
+	 
 		if(!clickMarker){
 			  
-			  
-			  clickMarker = getMarker(data.lat, data.lng, 'click');
+			 
 			  //directionを初期化
 			
 			  directionsDisplay = new google.maps.DirectionsRenderer();
@@ -117,18 +118,27 @@
 				 panelDiv = document.getElementById('direction-panel');
 				directionsDisplay.setPanel(panelDiv);
 				//console.log(panelDiv);
+				if(direct_start){
+					direct_start  = new google.maps.LatLng(data.currentLat, data.currentLng);
+				}
+				
 				direct_end = new google.maps.LatLng(data.lat, data.lng);	  
 				calcRoute();
 				//マーカーを設置
-				clickMarker.setIcon("https://chart.googleapis.com/chart?chst=d_simple_text_icon_above&chld=目的地|24|00F|glyphish_flag|24|F88|FFF");
+				clickMarker.setIcon("https://chart.googleapis.com/chart?chst=d_simple_text_icon_above&chld="+data.name+"|24|00F|glyphish_flag|24|F88|FFF");
 			  //clickloop();
 			}else{
-			
+			      clickMarker.setIcon("https://chart.googleapis.com/chart?chst=d_simple_text_icon_above&chld="+data.name+"|24|00F|glyphish_flag|24|F88|FFF");
 					  clickMarker.setPosition(new google.maps.LatLng(data.lat, data.lng));	
+					  new google.maps.LatLng(data.lat, data.lng);
+					  if(direct_start){
+					direct_start  = new google.maps.LatLng(data.currentLat, data.currentLng);
+				}
 					direct_end = new google.maps.LatLng(data.lat, data.lng);	
 				calcRoute();
 			  
 			  }
+			  alert(data.person + "が目的地を" + data.name + "に設定しました！");
 			  
 	  var canvas = document.getElementById("myCanvas");
       var c = canvas.getContext("2d");
@@ -226,7 +236,9 @@ function computeDuration(ms){
 }
 	//ルート計算
 	function calcRoute() {
-	  
+	    //alert("calcRoute()")
+		
+		
 		var request = {
 			origin : direct_start,
 			destination : direct_end,
@@ -243,7 +255,39 @@ function computeDuration(ms){
 
 	function getMarker(lat, lng, title) {
 	
-	if(title=="Me"){
+	if(title.match(/:stealth/)){
+		return new google.maps.Marker({
+			title: title,
+			map: map,
+			position: new google.maps.LatLng(lat,lng),
+			
+			
+			icon: "img/data/icon_stealth.png"
+		});
+	}
+	else if(title.match(/:ameba/)){
+	return new google.maps.Marker({
+			title: title,
+			map: map,
+			position: new google.maps.LatLng(lat,lng),
+			
+			
+			icon: "img/data/icon_ameba.png"
+		});
+	
+	}
+	else if(title.match(/:smile/)){
+	return new google.maps.Marker({
+			title: title,
+			map: map,
+			position: new google.maps.LatLng(lat,lng),
+			
+			
+			icon: "img/data/icon_smile.png"
+		});
+	
+	}
+	else if(title=="Me"){
 	
 	return new google.maps.Marker({
 			title: title,
@@ -264,7 +308,7 @@ function computeDuration(ms){
 			icon: "https://chart.googleapis.com/chart?chst=d_simple_text_icon_above&chld="+title+ "|24|00F|glyphish_flag|24|F88|FFF"
 		});
 	}else{
-	return new google.maps.Marker({
+		return new google.maps.Marker({
 			title: title,
 			map: map,
 			position: new google.maps.LatLng(lat,lng),
@@ -272,7 +316,6 @@ function computeDuration(ms){
 			
 			icon: "https://chart.googleapis.com/chart?chst=d_simple_text_icon_above&chld="+title+ "|24|00F|glyphish_runner|24|F88|FFF"
 		});
-	
 	}
 
 		
@@ -288,8 +331,10 @@ function computeDuration(ms){
       
 		myMarker = getMarker(data.lat, data.lng, 'Me');
 	 
-		
-	direct_start = new google.maps.LatLng(data.lat, data.lng);
+		if(new google.maps.LatLng(data.lat, data.lng)){
+			direct_start = new google.maps.LatLng(data.lat, data.lng);
+		}
+	
 	
 		
 		map.setCenter(myMarker.getPosition());
@@ -310,13 +355,14 @@ function computeDuration(ms){
 		if(myMarker) {
 			myMarker.setPosition(new google.maps.LatLng(data.lat,data.lng));
 			
+			
 		} else {
 		
 			markers[data.key] = getMarker(data.lat, data.lng, 'Me');
 		}		
-		
-	direct_start = new google.maps.LatLng(data.lat, data.lng);
-	
+	if(new google.maps.LatLng(data.lat, data.lng)){
+			direct_start = new google.maps.LatLng(data.lat, data.lng);
+		}
 		 
 		//map.setCenter(myMarker.getPosition());
        
